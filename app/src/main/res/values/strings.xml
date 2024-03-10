@@ -8,4 +8,5 @@
     <string name="email_warning">Email inválido</string>
     <string name="login_succeeded">Login efetuado com sucesso</string>
     <string name="email">Email</string>
+    <string name="logo_description">Descrição da logo da Trybe</string>
 </resources>
