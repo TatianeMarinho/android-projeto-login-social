@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Pattern
 
@@ -44,11 +45,15 @@ class MainActivity : AppCompatActivity() {
                emailTextInputLayout.error = null
                passwordTextInputLayout.error = null
 
-               Toast.makeText(
-                   this,
+               val snackbar = Snackbar.make(
+                   it,
                    R.string.login_succeeded,
-                   Toast.LENGTH_LONG
-               ).show()
+                   Snackbar.LENGTH_SHORT
+               )
+               snackbar.setAction("X") {
+                   snackbar.dismiss()
+               }
+               snackbar.show()
            } else{
                if (password.length <= 4) {
                    passwordTextInputLayout.error = getString(R.string.password_warning)
