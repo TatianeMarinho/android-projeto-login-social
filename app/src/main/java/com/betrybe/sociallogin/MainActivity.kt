@@ -2,10 +2,11 @@ package com.betrybe.sociallogin
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
     // declarando as variaves que receberam os atributos do layout
@@ -22,15 +23,43 @@ class MainActivity : AppCompatActivity() {
 
         // configura o listener de mudança de texto para o campo email
         emailEditText?.addTextChangedListener {
-            val password = passwordEditText?.text.toString() ?: ""
+            val passwordText = passwordEditText?.text.toString()
             val email = it?.toString() ?: ""
-            loginButton.isEnabled = email.isNotEmpty() && password.isNotEmpty()
+            loginButton.isEnabled = email.isNotEmpty() && passwordText.isNotEmpty()
         }
 
+        // configura o listener de mudança de texto para o campo senha
         passwordEditText?.addTextChangedListener {
-            val email = emailEditText?.text.toString() ?: ""
+            val emailText = emailEditText?.text.toString()
             val password = it?.toString() ?: ""
-            loginButton.isEnabled = email.isNotEmpty() && password.isNotEmpty()
+            loginButton.isEnabled = emailText.isNotEmpty() && password.isNotEmpty()
         }
+
+        // configura o listener de clique para o botao de entrar
+        loginButton.setOnClickListener {
+           val email = emailEditText?.text.toString()
+
+           if(validateEmail(email)) {
+               emailTextInputLayout.error = null
+               Toast.makeText(
+                   this,
+                   R.string.login_succeeded,
+                   Toast.LENGTH_LONG
+               ).show()
+           } else {
+               emailTextInputLayout.error = getString(R.string.email_warning)
+           }
+        }
+    }
+
+    private fun validateEmail(email:String): Boolean {
+        return Pattern.compile(
+            "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
+                    + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                    + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                    + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                    + "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
+                    + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
+        ).matcher(email).matches()
     }
 }
