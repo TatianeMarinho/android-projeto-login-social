@@ -38,16 +38,23 @@ class MainActivity : AppCompatActivity() {
         // configura o listener de clique para o botao de entrar
         loginButton.setOnClickListener {
            val email = emailEditText?.text.toString()
+           val password = passwordEditText?.text.toString()
 
-           if(validateEmail(email)) {
+           if(validateEmail(email) && password.length > 4) {
                emailTextInputLayout.error = null
+               passwordTextInputLayout.error = null
+
                Toast.makeText(
                    this,
                    R.string.login_succeeded,
                    Toast.LENGTH_LONG
                ).show()
-           } else {
-               emailTextInputLayout.error = getString(R.string.email_warning)
+           } else{
+               if (password.length <= 4) {
+                   passwordTextInputLayout.error = getString(R.string.password_warning)
+               } else {
+                   emailTextInputLayout.error = getString(R.string.email_warning)
+               }
            }
         }
     }
